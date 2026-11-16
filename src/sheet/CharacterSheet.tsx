@@ -343,7 +343,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 function InlineSelect({ value, options, onChange, label }: { value: string; options: string[]; onChange: (v: string) => void; label: string }) {
   return (
-    <select value={value} onChange={(e) => onChange(e.target.value)} aria-label={label} className="cursor-pointer rounded-md bg-transparent font-medium text-ink outline-none hover:bg-bg">
+    <select value={value} onChange={(e) => onChange(e.target.value)} aria-label={label} className="cursor-pointer appearance-none rounded-md bg-transparent px-0.5 font-medium text-ink underline decoration-dotted decoration-latte underline-offset-4 outline-none hover:bg-bg">
       {[...new Set([value, ...options])].map((o) => (
         <option key={o}>{o}</option>
       ))}

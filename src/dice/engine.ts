@@ -337,7 +337,7 @@ export class DiceEngine {
   }
 
   private step(dt: number) {
-    this.acc += Math.min(dt, 0.1);
+    this.acc += Math.min(dt, 0.25);
     const fixed = 1 / 120;
     while (this.acc >= fixed) {
       this.world.step(fixed);
@@ -414,7 +414,7 @@ export class DiceEngine {
     const offsets: number[] = [];
     for (let i = -12; i <= 12; i++) offsets.push(i / 12);
     offsets.sort((a, b) => Math.abs(a) - Math.abs(b));
-    for (let dist = 8; dist <= this.basePos.y * 1.7; dist += 0.5) {
+    for (let dist = this.camera.aspect < 1 ? 15 : 12; dist <= this.basePos.y * 1.7; dist += 0.5) {
       for (const o of offsets) {
         const look = new THREE.Vector3(c.x, 0, c.z + o * dist * 0.5);
         if (fits(look, dist)) {

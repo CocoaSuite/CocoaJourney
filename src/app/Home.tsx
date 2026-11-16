@@ -4,6 +4,7 @@ import { Button, IconButton, Modal } from '../components/ui';
 import { Icon, Logo } from '../components/Icon';
 import { FigurineArt } from '../figurine/FigurineArt';
 import { importSessionFile } from '../lib/sessionFile';
+import { useMapImage } from '../table/useMapImage';
 import type { Session } from '../types';
 import { DEFAULT_APPEARANCE } from '../figurine/archetypes';
 
@@ -88,6 +89,7 @@ export function Home() {
                 <div key={s.id} className="group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-surface shadow-soft">
                   <button type="button" className="flex flex-1 flex-col text-left" onClick={() => openSession(s.id)}>
                     <div className="relative h-28 overflow-hidden bg-[#E3D5B5]">
+                      <MapThumb session={s} />
                       <div className="absolute inset-0 flex items-end justify-center gap-1 pb-1">
                         {s.characters.slice(0, 5).map((c) => (
                           <FigurineArt key={c.id} appearance={c.appearance} className="h-20" />
@@ -153,3 +155,9 @@ export function Home() {
 const heroA = { ...DEFAULT_APPEARANCE, top: 'leather', topColor: 'forest', weapon: 'bow', cloak: 'long', cloakColor: 'forest', hair: 'ponytail', hairColor: 'copper', ears: 'pointed', baseColor: 'forest' };
 const heroB = { ...DEFAULT_APPEARANCE, top: 'plate', topColor: 'navy', weapon: 'sword', shield: 'kite', cloak: 'long', cloakColor: 'navy', skin: 'bronze', facialHair: 'braided', hairColor: 'raven', hair: 'cropped', body: 'sturdy', eyes: 'sharp', face: 'stern', baseColor: 'slate', boots: 'armored', gloves: 'gauntlets' };
 const heroC = { ...DEFAULT_APPEARANCE, top: 'robe', topColor: 'plum', weapon: 'staff', cloak: 'none', accessory: 'wizard', hair: 'long', hairColor: 'ash', skin: 'porcelain', eyes: 'glow', face: 'calm', belt: 'sash' };
+
+function MapThumb({ session }: { session: Session }) {
+  const { url } = useMapImage(session.map);
+  if (!url) return null;
+  return <img src={url} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70" />;
+}

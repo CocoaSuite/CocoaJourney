@@ -81,6 +81,19 @@
     -webkit-user-select: none;
     user-select: none;
   }
+  button,
+  a,
+  input,
+  select,
+  label {
+    touch-action: manipulation;
+  }
+  [role='application'],
+  [role='application'] * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
   button:disabled {
     cursor: default;
   }

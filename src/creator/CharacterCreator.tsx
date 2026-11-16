@@ -4,11 +4,14 @@ import { useStore } from '../store/store';
 import { makeCharacter } from '../store/sample';
 import { ARCHETYPES, randomAppearance } from '../figurine/archetypes';
 import { FigurineArt } from '../figurine/FigurineArt';
+import { findPart } from '../figurine/parts';
 import { CLASSES, SPECIES, blankSheet } from '../rules/dnd5e';
 import { Button, IconButton, cx } from '../components/ui';
 import { Icon } from '../components/Icon';
 import { CATEGORIES, optionsFor, valueOf, type Category } from './categories';
 import { freeSpot } from '../table/geometry';
+
+const HEADWEAR = ['hood', 'wizard', 'cap', 'helmet'];
 
 /** Visual character workshop: big preview, categories, and a scrollable strip of options. */
 export function CharacterCreator({ session }: { session: Session }) {
@@ -152,6 +155,15 @@ export function CharacterCreator({ session }: { session: Session }) {
             </div>
           </div>
 
+          {(cat.id === 'hair' || cat.id === 'hairColor') && HEADWEAR.includes(a.accessory) && (
+            <p className="-mt-2 flex items-center gap-2 px-1 text-[13px] text-muted">
+              <Icon name="sparkle" size={14} /> Hair is partly hidden under the {findPart('accessory', a.accessory).label.toLowerCase()}.
+              <button type="button" className="font-semibold text-cocoa underline" onClick={() => setLook({ accessory: 'none' })}>
+                Take it off
+              </button>
+            </p>
+          )}
+
           {/* Option strip */}
           <div className="flex shrink-0 flex-col gap-2">
             <div className="flex items-center justify-between px-1">
@@ -226,10 +238,12 @@ function OptionStrip({ cat, options, current, a, onChoose }: { cat: Category; op
             </button>
           );
         }
-        const preview: Appearance =
+        let preview: Appearance =
           cat.kind === 'archetype'
             ? { ...a, ...ARCHETYPES.find((x) => x.id === o.id)!.look }
             : ({ ...a, [cat.slot]: o.id } as Appearance);
+        // Show hairstyles and ears without a hat in the way.
+        if (cat.kind === 'part' && (cat.slot === 'hair' || cat.slot === 'ears') && HEADWEAR.includes(preview.accessory)) preview = { ...preview, accessory: 'none' };
         const crop = cat.kind === 'part' ? cat.crop : 'figure';
         return (
           <button

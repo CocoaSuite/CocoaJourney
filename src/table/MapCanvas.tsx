@@ -164,6 +164,14 @@ export function MapCanvas({ session, url, ref, onScale }: Props) {
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   };
 
+  const capture = (id: number) => {
+    try {
+      viewport.current?.setPointerCapture(id);
+    } catch {
+      /* pointer already released */
+    }
+  };
+
   const showGhost = (x: number, y: number, size: number) => {
     const g = ghost.current;
     if (!g) return;
@@ -183,7 +191,7 @@ export function MapCanvas({ session, url, ref, onScale }: Props) {
       const charId = figEl.dataset.fig!;
       const f = session.figurines[charId];
       if (!f) return;
-      viewport.current!.setPointerCapture(e.pointerId);
+      capture(e.pointerId);
       gesture.current = { kind: 'figure', id: e.pointerId, charId, startX: p.x, startY: p.y, origin: { x: f.x, y: f.y }, moved: false, el: figEl, size: f.size };
       return;
     }
@@ -191,7 +199,7 @@ export function MapCanvas({ session, url, ref, onScale }: Props) {
     if (g.kind === 'figure') return;
 
     pointers.current.set(e.pointerId, p);
-    viewport.current!.setPointerCapture(e.pointerId);
+    capture(e.pointerId);
     if (pointers.current.size === 1) {
       gesture.current = { kind: 'pan', id: e.pointerId, lastX: p.x, lastY: p.y, moved: 0 };
     } else if (pointers.current.size === 2) {
