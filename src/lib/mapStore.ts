@@ -19,7 +19,7 @@ export async function importMapFile(file: File): Promise<MapInfo> {
   }
   const { width, height } = await imageSize(file);
   const blobKey = uid('map:');
-  await set(blobKey, file);
+  await safeSet(blobKey, file);
   urlCache.set(blobKey, URL.createObjectURL(file));
   return {
     id: uid('m'),
@@ -33,7 +33,7 @@ export async function importMapFile(file: File): Promise<MapInfo> {
 export async function storeMapBlob(blob: Blob, name: string): Promise<MapInfo> {
   const { width, height } = await imageSize(blob);
   const blobKey = uid('map:');
-  await set(blobKey, blob);
+  await safeSet(blobKey, blob);
   urlCache.set(blobKey, URL.createObjectURL(blob));
   return { id: uid('m'), name, width, height, source: { kind: 'upload', blobKey, mime: blob.type } };
 }
@@ -77,4 +77,13 @@ function imageSize(blob: Blob): Promise<{ width: number; height: number }> {
     };
     img.src = url;
   });
+}
+
+/** Storage can be unavailable (private modes, sandboxed frames); keep the map in memory then. */
+async function safeSet(key: string, blob: Blob) {
+  try {
+    await set(key, blob);
+  } catch {
+    /* in-memory only for this visit */
+  }
 }
