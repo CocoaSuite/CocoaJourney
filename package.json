@@ -1,0 +1,45 @@
+{
+  "name": "cocoajourney",
+  "version": "0.1.0",
+  "description": "CocoaJourney — a simple, beautiful tabletop for D&D sessions.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p . && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CocoaSuite/cocoajourney.git"
+  },
+  "author": "CocoaSuite",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/CocoaSuite/cocoajourney/issues"
+  },
+  "homepage": "https://github.com/CocoaSuite/cocoajourney#readme",
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "cannon-es": "^0.20.0",
+    "idb-keyval": "^6.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.187.0",
+    "zustand": "^5.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.187.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  },
+  "private": true,
+  "type": "module"
+}
